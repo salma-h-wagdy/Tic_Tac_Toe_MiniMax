@@ -165,7 +165,7 @@ class Tic_Tac_Toe:
             return score 
     
        
-        if (not self.empty_squares()) : 
+        if (self.empty_squares()) : 
             return 0
     
         if (isMax) :      
@@ -226,17 +226,17 @@ class Tic_Tac_Toe:
     def evaluate(self):
         for row in range(3):
             if self.grid[row][0]['text'] == self.grid[row][1]['text'] == self.grid[row][2]['text'] != "":
-                return 10 if self.grid[row][0] == self.turn else -10
+                return 10 if self.grid[row][0]['text'] != self.choice else -10
 
         for column in range(3):
             if self.grid[0][column]['text'] == self.grid[1][column]['text'] == self.grid[2][column]['text'] != "":
-                return 10 if self.grid[0][column] == self.turn else -10
+                return 10 if self.grid[0][column]['text'] != self.choice else -10
 
         if self.grid[0][0]['text'] == self.grid[1][1]['text'] == self.grid[2][2]['text'] != "":
-            return 10 if self.grid[0][0] == self.turn else -10
+            return 10 if self.grid[0][0]['text'] != self.choice else -10
 
         if self.grid[0][2]['text'] == self.grid[1][1]['text'] == self.grid[2][0]['text'] != "":
-            return 10 if self.grid[0][2] == self.turn else -10
+            return 10 if self.grid[0][2]['text'] != self.choice else -10
 
         return 0
 
