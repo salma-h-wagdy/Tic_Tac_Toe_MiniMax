@@ -1,18 +1,25 @@
-
+# from __future__ import annotations
 import random
-#import tkinter as tk 
+
 from tkinter import *  #maba7bsh el beta3 da
 
 
 
+# from typing import TYPE_CHECKING
+
+# if TYPE_CHECKING:
+#     from start import Start
+
+
 class Tic_Tac_Toe:
-    def __init__(self, root,choice):
+    def __init__(self, root,choice,quit_callback):
         self.root = root
         self.turns=["X","O"]
         self.grid = [[None for _ in range(3)] for _ in range(3)]
         self.turn=random.choice(self.turns)
         self.header_label= None
         self.choice=choice
+        self.quit_callback = quit_callback
         self.create_grid()
         
         
@@ -39,11 +46,7 @@ class Tic_Tac_Toe:
                                         command= lambda row=row, column=column: self.next_move(row,column))
                     
                 
-                # else:
-                #    row,column= self.findBestMove(self.grid)
-                #    self.grid[row][column] = Button(game_frame, text="",width=10, font=('Comic Sans MS',20),bg="#F0F0F0",
-                #                         command= self.next_move(row,column))
-                
+
                     self.grid[row][column].grid(row=row,column=column, padx=10, pady=10, ipadx=20, ipady=20)
 
        
@@ -52,6 +55,9 @@ class Tic_Tac_Toe:
                     
         reset_button = Button(game_frame, text="Restart", command=self.new_game,bg="#d5d7d2",font=("Comic Sans MS", 14))
         reset_button.grid(column=0, row=3, columnspan=3, padx=10, pady=10, sticky="ew")
+
+        quit_button = Button(game_frame, text="Exit to start", command=self.quit_game,bg="#d5d7d2",font=("Comic Sans MS", 14))
+        quit_button.grid(column=0, row=4, columnspan=3, padx=10, pady=10, sticky="ew")
 
 
 
@@ -242,3 +248,5 @@ class Tic_Tac_Toe:
 
         return 0
 
+    def quit_game(self):
+        self.quit_callback()

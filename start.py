@@ -37,4 +37,9 @@ class Start:
     def start_game(self):
         for widget in self.root.winfo_children():
             widget.destroy()
-        Tic_Tac_Toe(self.root, self.choice)
+        Tic_Tac_Toe(self.root, self.choice, quit_callback=self.quit_to_start)
+
+    def quit_to_start(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+        self.page()
