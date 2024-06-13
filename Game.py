@@ -62,6 +62,8 @@ class Tic_Tac_Toe:
         for row in range(3):
             for column in range(3):
                 self.grid[row][column].config(text="",bg="#F0F0F0")
+        if(self.turn!=self.choice):
+            self.mini_AI()
     
     def next_move(self,row,column):
             
