@@ -104,7 +104,7 @@ class Tic_Tac_Toe:
 
 
     def check_grid(self):
-            win=False
+
             for row in range(3):
                 if self.grid[row][0]['text'] == self.grid[row][1]['text'] == self.grid[row][2]['text'] != "":
                     if(self.grid[row][0]['text']==self.choice):
@@ -173,7 +173,7 @@ class Tic_Tac_Toe:
             return score 
     
        
-        if (self.empty_squares()) : 
+        if (not self.empty_squares()) : 
             return 0
     
         if (isMax) :      
@@ -199,7 +199,7 @@ class Tic_Tac_Toe:
                 
                     if (self.grid[i][j]['text']=="") : 
                     
-                        self.grid[i][j]['text'] = self.turn  
+                        self.grid[i][j]['text'] = self.choice  
     
                         
                         best = min(best, self.minimax( depth + 1, not isMax)) 
