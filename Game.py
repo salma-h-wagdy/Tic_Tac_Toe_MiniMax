@@ -51,7 +51,7 @@ class Tic_Tac_Toe:
 
        
         if(self.turn!=self.choice):
-            self.mini_AI()
+            self.root.after(100, self.mini_AI)
                     
         reset_button = Button(game_frame, text="Restart", command=self.new_game,bg="#d5d7d2",font=("Comic Sans MS", 14))
         reset_button.grid(column=0, row=3, columnspan=3, padx=10, pady=10, sticky="ew")
@@ -69,7 +69,7 @@ class Tic_Tac_Toe:
             for column in range(3):
                 self.grid[row][column].config(text="",bg="#F0F0F0")
         if(self.turn!=self.choice):
-            self.mini_AI()
+            self.root.after(100, self.mini_AI)
     
     def next_move(self,row,column):
             
@@ -80,7 +80,7 @@ class Tic_Tac_Toe:
                 self.turn = self.turns[1] if self.turn == self.turns[0] else self.turns[0]
                 self.header_label.config(text=f"{self.turn}'s turn")
                 if(self.turn!=self.choice):
-                    self.mini_AI()
+                    self.root.after(100, self.mini_AI)
 
             elif check is True:
                 self.header_label.config(text=f"{self.turn} wins")
@@ -137,9 +137,7 @@ class Tic_Tac_Toe:
 
             elif self.empty_squares() is False:
 
-                for row in range(3):
-                    for column in range(3):
-                        self.highlight_tie()
+                self.highlight_tie()
                 return "t"
 
             else:
@@ -162,50 +160,40 @@ class Tic_Tac_Toe:
 
         return any(self.grid[row][column]['text'] == "" for row in range(3) for column in range(3))
 
-    def minimax(self, depth, isMax) :  
-        score = self.evaluate() 
+    def minimax(self, depth, isMax, alpha=-float('inf'), beta=float('inf')):
+        score = self.evaluate()
 
-        if (score == 10) :  
-            return score 
-    
-       
-        if (score == -10) : 
-            return score 
-    
-       
-        if (not self.empty_squares()) : 
+        if (score == 10):
+            return score
+        if (score == -10):
+            return score
+        if (not self.empty_squares()):
             return 0
-    
-        if (isMax) :      
-            best = -1000 
-    
-            for i in range(3) :
-                for j in range(3) : 
-                
-                    if (self.grid[i][j]['text']=="") : 
-                    
-                        self.grid[i][j]['text'] = self.turn  
-    
-                        best = max( best, self.minimax( depth + 1,not isMax) ) 
-    
-                        self.grid[i][j]['text']=""
-            return best 
-    
-        else : 
-            best = 1000 
-    
-            for i in range(3) :          
-                for j in range(3) : 
-                
-                    if (self.grid[i][j]['text']=="") : 
-                    
-                        self.grid[i][j]['text'] = self.choice  
-    
-                        
-                        best = min(best, self.minimax( depth + 1, not isMax)) 
-    
-                        self.grid[i][j]['text']=""
-            return best 
+
+        if isMax:
+            best = -1000
+            for i in range(3):
+                for j in range(3):
+                    if (self.grid[i][j]['text'] == ""):
+                        self.grid[i][j]['text'] = self.turn
+                        best = max(best, self.minimax(depth + 1, not isMax, alpha, beta))
+                        self.grid[i][j]['text'] = ""
+                        alpha = max(alpha, best)
+                        if (beta <= alpha):
+                            break
+            return best
+        else:
+            best = 1000
+            for i in range(3):
+                for j in range(3):
+                    if (self.grid[i][j]['text'] == ""):
+                        self.grid[i][j]['text'] = self.choice
+                        best = min(best, self.minimax(depth + 1, not isMax, alpha, beta))
+                        self.grid[i][j]['text'] = ""
+                        beta = min(beta, best)
+                        if beta <= alpha:
+                            break
+            return best
     
     def findBestMove(self) :  
         bestVal = -1000 
